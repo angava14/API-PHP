@@ -10,25 +10,26 @@ class TrucksController {
                                         /* Controlador entre API - DAO*/
     private $trunk = null;
 
-
-    function nuevasolicitud($data){
+    function crearusuario($data){
         $this->trunk = new TrucksDao;
-        $data = $this->trunk->nuevasolicitud($data);
-
+        $data = $this->trunk->crearusuario($data);
             /*  Funciones para operar datos*/
-
-
         return json_encode($data);
     }
 
-    function getjefes(){
+    function usuarios(){
         $this->trunk = new TrucksDao;
-        $data = $this->trunk->getjefes();
-
+        $data = $this->trunk->usuarios();
             /*  Funciones para operar datos*/
-
-
         return json_encode($data);
     }
+
+    function login(){
+        $this->trunk = new TrucksDao;
+        $data = $this->trunk->login();
+            /*  Funciones para operar datos*/
+        return json_encode($data);
+    }
+
 
 }

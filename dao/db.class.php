@@ -11,7 +11,7 @@ class Database {
 
     public function connect() {
         if (!isset($this->conexion)) {
-            $conn = new mysqli("localhost", "disetronica", "d1s3tr0n", "ausentismos"); /* host , usuario , contraseña, bd  */
+            $conn = new mysqli("localhost", "root", "", "bdejemplo"); /* host , usuario , contraseña, bd  */
             $this->conexion = $conn;
         }
     }

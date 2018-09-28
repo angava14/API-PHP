@@ -12,16 +12,16 @@ class TrucksDao extends Database {
                                                           /*  Funciones y Querys  */
 
                                                         /*Ejemplo Post*/
-    function nuevasolicitud($data){
-        $query = "INSERT INTO solicitudes (id, nombre, aprobador, fecha) VALUES (null , '$data->nombre' , '$data->aprobador' , '$data->fecha'    )" ;
+    function crearusuario($data){
+        $query = "INSERT INTO usuarios(id , user, password, fecha) VALUES (null,'{$data['Userid']}', '{$data['Password']}' , null)" ;
         $this->connect();
         $newDatas = $this->execute($query);
         $this->disconnect();
         return $newDatas ; 
     }
                                                         /*Ejemplo Get*/
-    function getjefes(){
-        $query = "SELECT * FROM  jefes " ;
+    function usuarios(){
+        $query = "SELECT * FROM usuarios" ;
         $this->connect();
         $newDatas = $this->execute($query);
         $this->disconnect();
@@ -36,6 +36,13 @@ class TrucksDao extends Database {
         }
     }
 
+    function login($data){                                          /*Ejemplo Get parametro*/
+        $query = "SELECT * from usuarios WHERE user ='{$data['Userid']}'' AND password ='{$data['Password']}'" ;
+        $this->connect();
+        $newDatas = $this->execute($query);
+        $this->disconnect();
+        return $newDatas ; 
+    }
 
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 require_once("Rest.inc.php");
-//header("Access-Control-Allow-Origin: https://www.onlinedst.com",false);
+//header("Access-Control-Allow-Origin: /*URL DE PAGINA*/ ",false);
 header("Access-Control-Allow-Origin: *");
 date_default_timezone_set('America/Bogota');
 $dir = explode("/", $_SERVER['PHP_SELF']);
@@ -27,36 +27,54 @@ class API extends REST {
       
 
     private function session() {
-        if (!empty($_SESSION['login_sims'])) {
-            return $_SESSION['login_sims'];
+        if (!empty($_SESSION['login_session'])) {
+            return $_SESSION['login_session'];
         } else {
             $this->response('NO_SESSION', 306);
         }
     }
-
     private function checkMethod($method) {
-        // Cross validation if the request method is POST else it will return "Not Acceptable" status
+        // Cross validation if the request method is POST or GET else it will return "Not Acceptable" status
         if ($this->get_request_method() != $method) {
             $this->response('', 406);
         }
     }
+          
+    private function login() {               //GET CON PARAMETRO
 
-    private function nuevasolicitud() {
-        $this->checkMethod('POST');
-        require '../controller/TrucksController.php';
-        $trucksController = new TrucksController();
-        $data = json_decode(file_get_contents("php://input"));
-        $data = $trucksController->nuevasolicitud($data->body);
-        $this->response($data, 200);
-    }
-
-    private function getjefes(){
         $this->checkMethod('GET');
         require '../controller/TrucksController.php';
         $trucksController = new TrucksController();
-        $data = $trucksController->getjefes();
+        $params = $this->_request;
+        
+        $json = $trucksController->login($params);
+
+        if ($json != "0") {
+            $_SESSION['login_session'] = $json;
+            $this->response('OK', 200);
+        } else {
+            $this->response('ERROR', 500);
+        }
+    }
+
+
+    private function usuarios(){       //GET SIN PARAMETRO
+        $this->checkMethod('GET');
+        require '../controller/TrucksController.php';
+        $trucksController = new TrucksController();
+        $data = $trucksController->usuarios();
         $this->response($data, 200);
     }
+
+    private function crearusuario(){    //POST 
+        $this->checkMethod('POST');
+        require '../controller/TrucksController.php';
+        $trucksController = new TrucksController();
+        $data = json_decode(file_get_contents("php://input"),true);
+        $data = $trucksController->crearusuario($data['body']);
+        $this->response($data, 200);
+    }
+
 
 }
 
